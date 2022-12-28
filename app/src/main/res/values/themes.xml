@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.MovieCompose" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.MovieCompose.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/teal_200</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
+        <item name="postSplashScreenTheme">@style/Theme.MovieCompose</item>
+    </style>
 </resources>
