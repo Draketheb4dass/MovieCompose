@@ -5,6 +5,10 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +49,7 @@ fun TVShowDetail(
         viewModel.tvDetail.value?.voteAverage?.let {
             TVShowPoster(imageUrl = Api.getPosterPath(viewModel.tvDetail.value?.backdropPath),
                 imageHeight = 300.dp, rating = it, originalName = viewModel.tvDetail.value?.originalName?:"",
-                name = viewModel.tvDetail.value?.name?:""
+                name = viewModel.tvDetail.value?.name?:"", onBackPressed = onBackPressed
             )
         }
         TVShowSummary(summary = viewModel.tvDetail.value?.overview?: "")
@@ -63,6 +67,7 @@ private fun TVShowPoster(
     rating: Float,
     name: String,
     originalName: String,
+    onBackPressed: () -> Unit
 ) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
@@ -71,26 +76,38 @@ private fun TVShowPoster(
             .build()
     )
 
-    Box(modifier = Modifier.fillMaxWidth().height(300.dp), contentAlignment = Alignment.BottomStart) {
-        Image(
-            painter = painter,
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(imageHeight)
-        )
-        Column(modifier = Modifier.padding(start = 24.dp)) {
-            Text(originalName, fontSize = 12.sp, color = Color.White)
-            Text(name, fontSize = 34.sp, color = Color.White)
-            RatingBar(
-                modifier = Modifier.height(50.dp),
-                rating = rating.toDouble()/2,
-                stars = 5,
-            )
-        }
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(300.dp)) {
 
+
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp), contentAlignment = Alignment.BottomStart) {
+            Image(
+                painter = painter,
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(imageHeight)
+            )
+            Column(modifier = Modifier.padding(start = 24.dp)) {
+                Text(originalName, fontSize = 12.sp, color = Color.White)
+                Text(name, fontSize = 34.sp, color = Color.White)
+                RatingBar(
+                    modifier = Modifier.height(50.dp),
+                    rating = rating.toDouble()/2,
+                    stars = 5,
+                )
+            }
+
+        }
+        IconButton(onClick = { onBackPressed() }) {
+            Image(painter = painterResource(id = R.drawable.ic_back), contentDescription = "star")
+        }
     }
+
 
 
 
