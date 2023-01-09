@@ -20,6 +20,6 @@ interface TMDBService {
     @GET("tv/on_the_air")
     suspend fun getOnTVTVShows(@Query("page") page: Int) : Response<TVShowsResponseModel>
 
-    @GET("/tv/{tv_id}")
+    @GET("/3/tv/{tv_id}")
     suspend fun getTVShowDetail(@Path("tv_id") id: Long) : Response<TVShowDetail>
 }

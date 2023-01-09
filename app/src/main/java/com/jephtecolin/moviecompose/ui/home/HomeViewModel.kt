@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 
     val tvShowPageStateFlow: MutableStateFlow<Int> = MutableStateFlow(1)
 
-    private val newMovieFlow = tvShowPageStateFlow.flatMapLatest {
+    private val newTVShowFlow = tvShowPageStateFlow.flatMapLatest {
         _tvLoadingState.value = NetworkState.LOADING
 
         when (selectedTVShowCategory.value) {
@@ -121,7 +121,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            newMovieFlow.collectLatest {
+            newTVShowFlow.collectLatest {
                 tvShows.value.addAll(it!!.results)
                 Timber.d(tvShows.value.size.toString())
             }

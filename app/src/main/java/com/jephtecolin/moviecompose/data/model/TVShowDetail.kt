@@ -9,6 +9,8 @@ data class TVShowDetail(
     @SerializedName("imdb_id")
     var imdbId: String?,
     var name: String,
+    @SerializedName("original_name")
+    var originalName: String,
     var overview: String?,
     @SerializedName("backdrop_path")
     var backdropPath: String?,

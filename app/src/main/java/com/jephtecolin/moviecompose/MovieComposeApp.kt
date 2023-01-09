@@ -29,7 +29,10 @@ fun MovieComposeApp(
         composable("${Screen.TVShowDetail.route}/{tvId}" , arguments = listOf(navArgument("tvId"){
             type = NavType.LongType
         })) { backStackEntry ->
-            TVShowDetail(viewModel = hiltViewModel(), onBackPressed = { appState.navigateBack()})
+            TVShowDetail(
+                tvId = backStackEntry.arguments!!.getLong("tvId"),
+                viewModel = hiltViewModel(),
+                onBackPressed = { appState.navigateBack()})
         }
 
     }

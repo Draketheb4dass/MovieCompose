@@ -44,7 +44,7 @@ class TVShowDataSource @Inject constructor(private val tmdbService: TMDBService)
         }
     }
 
-    fun getTVShowDetail(id: Long = 1): Flow<TVShowDetail?> = flow {
+    fun getTVShowDetail(id: Long): Flow<TVShowDetail?> = flow {
         val result = tmdbService.getTVShowDetail(id)
         if(result.isSuccessful) {
             emit(result.body())
