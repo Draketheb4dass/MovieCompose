@@ -3,15 +3,12 @@ package com.jephtecolin.moviecompose.ui.home
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jephtecolin.moviecompose.data.model.Movie
-import com.jephtecolin.moviecompose.data.model.MovieCategory
-import com.jephtecolin.moviecompose.data.remote.MovieDataSource
+import com.jephtecolin.moviecompose.data.model.TVShow
+import com.jephtecolin.moviecompose.data.model.TVShowCategory
+import com.jephtecolin.moviecompose.data.remote.TVShowDataSource
 import com.jephtecolin.moviecompose.data.remote.NetworkState
-import com.jephtecolin.moviecompose.data.remote.response.MoviesResponseModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -21,51 +18,51 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    movieDataSource: MovieDataSource
+    tvShowDataSource: TVShowDataSource
 ) : ViewModel(){
 
-    private val _movieLoadingState: MutableState<NetworkState> = mutableStateOf(NetworkState.IDLE)
-    val movieLoadingState: State<NetworkState> get() = _movieLoadingState
-    val selectedMovieCategory: MutableStateFlow<MovieCategory> = MutableStateFlow(MovieCategory.TOP_RATED)
+    private val _tvLoadingState: MutableState<NetworkState> = mutableStateOf(NetworkState.IDLE)
+    val tvLoadingState: State<NetworkState> get() = _tvLoadingState
+    val selectedTVShowCategory: MutableStateFlow<TVShowCategory> = MutableStateFlow(TVShowCategory.TOP_RATED)
 
-    val movies: State<MutableList<Movie>> = mutableStateOf(mutableListOf())
+    val tvShows: State<MutableList<TVShow>> = mutableStateOf(mutableListOf())
 
-    val moviePageStateFlow: MutableStateFlow<Int> = MutableStateFlow(1)
+    val tvShowPageStateFlow: MutableStateFlow<Int> = MutableStateFlow(1)
 
-    private val newMovieFlow = moviePageStateFlow.flatMapLatest {
-        _movieLoadingState.value = NetworkState.LOADING
+    private val newMovieFlow = tvShowPageStateFlow.flatMapLatest {
+        _tvLoadingState.value = NetworkState.LOADING
 
-        when (selectedMovieCategory.value) {
-            MovieCategory.TOP_RATED -> {
-                movieDataSource.getTopRatedMovies(moviePageStateFlow.value)
-                    .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+        when (selectedTVShowCategory.value) {
+            TVShowCategory.TOP_RATED -> {
+                tvShowDataSource.getTopRatedTVShows(tvShowPageStateFlow.value)
+                    .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                     .catch { e ->
                         Timber.e(e)
-                        _movieLoadingState.value = NetworkState.ERROR
+                        _tvLoadingState.value = NetworkState.ERROR
                     }
             }
-            MovieCategory.POPULAR -> {
-                movieDataSource.getPopularMovies(moviePageStateFlow.value)
-                    .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+            TVShowCategory.POPULAR -> {
+                tvShowDataSource.getPopularTVShows(tvShowPageStateFlow.value)
+                    .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                     .catch { e ->
                         Timber.e(e)
-                        _movieLoadingState.value = NetworkState.ERROR
+                        _tvLoadingState.value = NetworkState.ERROR
                     }
             }
-            MovieCategory.ON_TV -> {
-                movieDataSource.getUpcomingMovies(moviePageStateFlow.value)
-                    .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+            TVShowCategory.ON_TV -> {
+                tvShowDataSource.getTVTVShows(tvShowPageStateFlow.value)
+                    .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                     .catch { e ->
                         Timber.e(e)
-                        _movieLoadingState.value = NetworkState.ERROR
+                        _tvLoadingState.value = NetworkState.ERROR
                     }
             }
-            MovieCategory.AIRING_TODAY -> {
-                movieDataSource.getNowPlayingMovies(moviePageStateFlow.value)
-                    .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+            TVShowCategory.AIRING_TODAY -> {
+                tvShowDataSource.getAiringTodayTVShows(tvShowPageStateFlow.value)
+                    .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                     .catch { e ->
                         Timber.e(e)
-                        _movieLoadingState.value = NetworkState.ERROR
+                        _tvLoadingState.value = NetworkState.ERROR
                     }
             }
         }
@@ -73,40 +70,40 @@ class HomeViewModel @Inject constructor(
 
     }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
-    private val newMovieFlo = selectedMovieCategory.flatMapLatest {
-            _movieLoadingState.value = NetworkState.LOADING
+    private val newMovieFlo = selectedTVShowCategory.flatMapLatest {
+            _tvLoadingState.value = NetworkState.LOADING
 
-            when (selectedMovieCategory.value) {
-                MovieCategory.TOP_RATED -> {
-                    movieDataSource.getTopRatedMovies()
-                        .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+            when (selectedTVShowCategory.value) {
+                TVShowCategory.TOP_RATED -> {
+                    tvShowDataSource.getTopRatedTVShows()
+                        .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                         .catch { e ->
                             Timber.e(e)
-                            _movieLoadingState.value = NetworkState.ERROR
+                            _tvLoadingState.value = NetworkState.ERROR
                         }
                 }
-                MovieCategory.POPULAR -> {
-                    movieDataSource.getPopularMovies()
-                        .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+                TVShowCategory.POPULAR -> {
+                    tvShowDataSource.getPopularTVShows()
+                        .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                         .catch { e ->
                             Timber.e(e)
-                            _movieLoadingState.value = NetworkState.ERROR
+                            _tvLoadingState.value = NetworkState.ERROR
                         }
                 }
-                MovieCategory.ON_TV -> {
-                    movieDataSource.getUpcomingMovies()
-                        .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+                TVShowCategory.ON_TV -> {
+                    tvShowDataSource.getTVTVShows()
+                        .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                         .catch { e ->
                             Timber.e(e)
-                            _movieLoadingState.value = NetworkState.ERROR
+                            _tvLoadingState.value = NetworkState.ERROR
                         }
                 }
-                MovieCategory.AIRING_TODAY -> {
-                    movieDataSource.getNowPlayingMovies()
-                        .onCompletion { _movieLoadingState.value = NetworkState.SUCCESS }
+                TVShowCategory.AIRING_TODAY -> {
+                    tvShowDataSource.getAiringTodayTVShows()
+                        .onCompletion { _tvLoadingState.value = NetworkState.SUCCESS }
                         .catch { e ->
                             Timber.e(e)
-                            _movieLoadingState.value = NetworkState.ERROR
+                            _tvLoadingState.value = NetworkState.ERROR
                         }
                 }
             }
@@ -117,23 +114,23 @@ class HomeViewModel @Inject constructor(
 
 
     fun fetchNextMoviePage() {
-        if (movieLoadingState.value != NetworkState.LOADING) {
-            moviePageStateFlow.value++
+        if (tvLoadingState.value != NetworkState.LOADING) {
+            tvShowPageStateFlow.value++
         }
     }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             newMovieFlow.collectLatest {
-                movies.value.addAll(it!!.results)
-                Timber.d(movies.value.size.toString())
+                tvShows.value.addAll(it!!.results)
+                Timber.d(tvShows.value.size.toString())
             }
         }
 
         viewModelScope.launch {
             newMovieFlo.collectLatest {
-                movies.value.clear()
-                movies.value.addAll(it!!.results)
+                tvShows.value.clear()
+                tvShows.value.addAll(it!!.results)
             }
         }
     }

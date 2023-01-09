@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.jephtecolin.moviecompose.R
-import com.jephtecolin.moviecompose.data.model.Movie
+import com.jephtecolin.moviecompose.data.model.TVShow
 import com.jephtecolin.moviecompose.data.remote.Api
 import java.math.RoundingMode
 
 @Composable
-fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
+fun TVShowCard(tvShow: TVShow, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .padding(4.dp)
@@ -43,7 +43,7 @@ fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
                         centerHorizontallyTo(parent)
                         top.linkTo(parent.top)
                     },
-                model = Api.getPosterPath(movie.posterPath),
+                model = Api.getPosterPath(tvShow.posterPath),
                 contentDescription = ""
             )
 
@@ -54,7 +54,7 @@ fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
                         top.linkTo(image.bottom)
                     }
                     .padding(8.dp),
-                text = movie.title,
+                text = tvShow.name,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
@@ -70,7 +70,7 @@ fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
                     }
                     .padding(horizontal = 8.dp)
                     .padding(bottom = 12.dp),
-                rating = movie.voteAverage.toDouble()/2,
+                rating = tvShow.voteAverage.toDouble()/2,
                 stars = 5,
             )
         }

@@ -10,12 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jephtecolin.moviecompose.data.model.Movie
-import com.jephtecolin.moviecompose.data.model.MovieCategory
-import com.jephtecolin.moviecompose.data.model.getMovieCategory
+import com.jephtecolin.moviecompose.data.model.TVShow
+import com.jephtecolin.moviecompose.data.model.getTVShowCategory
 import com.jephtecolin.moviecompose.data.remote.NetworkState
 import com.jephtecolin.moviecompose.extensions.paging
-import com.jephtecolin.moviecompose.ui.MovieCard
+import com.jephtecolin.moviecompose.ui.TVShowCard
 import com.jephtecolin.moviecompose.ui.components.ChipGroup
 
 @Composable
@@ -23,8 +22,8 @@ fun Home(
     viewModel: HomeViewModel,
     navigateToMovie: (String) -> Unit
 ) {
-    val networkState: NetworkState by viewModel.movieLoadingState
-    val movies: State<List<Movie>> =  viewModel.movies
+    val networkState: NetworkState by viewModel.tvLoadingState
+    val movies: State<List<TVShow>> =  viewModel.tvShows
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -32,8 +31,8 @@ fun Home(
     ) {
 
             Column(modifier = Modifier.fillMaxSize()) {
-                ChipGroup(selectedMovieCategory = viewModel.selectedMovieCategory.value,
-                onSelectedChanged = {viewModel.selectedMovieCategory.value = getMovieCategory(it) }
+                ChipGroup(selectedTVShowCategory = viewModel.selectedTVShowCategory.value,
+                onSelectedChanged = {viewModel.selectedTVShowCategory.value = getTVShowCategory(it) }
                 )
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
@@ -44,12 +43,12 @@ fun Home(
 
                     paging(
                         items = movies.value,
-                        currentIndexFlow = viewModel.moviePageStateFlow,
+                        currentIndexFlow = viewModel.tvShowPageStateFlow,
                         fetch = {
                             viewModel.fetchNextMoviePage()
                         }
                     ) {
-                        MovieCard(movie = it)
+                        TVShowCard(tvShow = it)
                     }
                 }
         }

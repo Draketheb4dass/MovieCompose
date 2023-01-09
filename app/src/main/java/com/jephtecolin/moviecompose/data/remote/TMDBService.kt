@@ -1,20 +1,25 @@
 package com.jephtecolin.moviecompose.data.remote
 
-import com.jephtecolin.moviecompose.data.remote.response.MoviesResponseModel
+import com.jephtecolin.moviecompose.data.model.TVShowDetail
+import com.jephtecolin.moviecompose.data.remote.response.TVShowsResponseModel
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBService {
-    @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(@Query("page") page: Int) : Response<MoviesResponseModel>
+    @GET("tv/airing_today")
+    suspend fun getAiringTodayTvShows(@Query("page") page: Int) : Response<TVShowsResponseModel>
 
-    @GET("movie/top_rated")
-    suspend fun getTopRatedMovies(@Query("page") page: Int) : Response<MoviesResponseModel>
+    @GET("tv/top_rated")
+    suspend fun getTopRatedTVShows(@Query("page") page: Int) : Response<TVShowsResponseModel>
 
-    @GET("movie/popular")
-    suspend fun getPopularMovies(@Query("page") page: Int) : Response<MoviesResponseModel>
+    @GET("tv/popular")
+    suspend fun getPopularTVShows(@Query("page") page: Int) : Response<TVShowsResponseModel>
 
-    @GET("movie/upcoming")
-    suspend fun getUpcomingMovies(@Query("page") page: Int) : Response<MoviesResponseModel>
+    @GET("tv/on_the_air")
+    suspend fun getOnTVTVShows(@Query("page") page: Int) : Response<TVShowsResponseModel>
+
+    @GET("/tv/{tv_id}")
+    suspend fun getTVShowDetail(@Path("tv_id") id: Long) : Response<TVShowDetail>
 }

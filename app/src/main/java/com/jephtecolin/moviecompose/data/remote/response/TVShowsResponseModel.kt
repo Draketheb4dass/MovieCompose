@@ -1,11 +1,11 @@
 package com.jephtecolin.moviecompose.data.remote.response
 
 import com.google.gson.annotations.SerializedName
-import com.jephtecolin.moviecompose.data.model.Movie
+import com.jephtecolin.moviecompose.data.model.TVShow
 
-data class MoviesResponseModel(
+data class TVShowsResponseModel(
     val page: Int,
-    val results: List<Movie>,
+    val results: List<TVShow>,
     @SerializedName("total_results")
     val totalResult: Int,
     @SerializedName("total_pages")

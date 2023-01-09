@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.jephtecolin.moviecompose.data.model.MovieCategory
-import com.jephtecolin.moviecompose.data.model.getAllMovieCategories
+import com.jephtecolin.moviecompose.data.model.TVShowCategory
+import com.jephtecolin.moviecompose.data.model.getAllTVShowCategories
 
 @Composable
 fun MovieCategoryChip(
@@ -48,8 +48,8 @@ fun MovieCategoryChip(
 
 @Composable
 fun ChipGroup(
-    movieCategories: List<MovieCategory> = getAllMovieCategories(),
-    selectedMovieCategory: MovieCategory? = null,
+    movieCategories: List<TVShowCategory> = getAllTVShowCategories(),
+    selectedTVShowCategory: TVShowCategory? = null,
     onSelectedChanged: (String) -> Unit = {},
 ) {
     Column(modifier = Modifier.padding(start = 24.dp)) {
@@ -57,7 +57,7 @@ fun ChipGroup(
             items(movieCategories) { movieCategory ->
                 MovieCategoryChip(
                     name = movieCategory.value,
-                    isSelected = selectedMovieCategory == movieCategory,
+                    isSelected = selectedTVShowCategory == movieCategory,
                     onSelectionChanged = {
                         onSelectedChanged(it)
                     },
