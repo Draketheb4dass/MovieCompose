@@ -7,8 +7,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MovieDataSource @Inject constructor(private val tmdbService: TMDBService) {
-    fun getNowPlayingMovies(): Flow<MoviesResponseModel?> = flow {
-        val result = tmdbService.getNowPlayingMovies()
+    fun getNowPlayingMovies(page: Int = 1): Flow<MoviesResponseModel?> = flow {
+        val result = tmdbService.getNowPlayingMovies(page)
         if(result.isSuccessful) {
             emit(result.body())
         } else {
@@ -16,8 +16,8 @@ class MovieDataSource @Inject constructor(private val tmdbService: TMDBService) 
         }
     }
 
-    fun getTopRatedMovies(): Flow<MoviesResponseModel?> = flow {
-        val result = tmdbService.getTopRatedMovies()
+    fun getTopRatedMovies(page: Int = 1): Flow<MoviesResponseModel?> = flow {
+        val result = tmdbService.getTopRatedMovies(page)
         if(result.isSuccessful) {
             emit(result.body())
         } else {
@@ -25,12 +25,21 @@ class MovieDataSource @Inject constructor(private val tmdbService: TMDBService) 
         }
     }
 
-    fun getPopularMovies(): Flow<MoviesResponseModel?> = flow {
-        val result = tmdbService.getPopularMovies()
+    fun getPopularMovies(page: Int = 1): Flow<MoviesResponseModel?> = flow {
+        val result = tmdbService.getPopularMovies(page)
         if(result.isSuccessful) {
             emit(result.body())
         } else {
             Timber.d("Error fetching popular movies: %s", result.errorBody())
+        }
+    }
+
+    fun getUpcomingMovies(page: Int = 1): Flow<MoviesResponseModel?> = flow {
+        val result = tmdbService.getUpcomingMovies(page)
+        if(result.isSuccessful) {
+            emit(result.body())
+        } else {
+            Timber.d("Error fetching latest movies: %s", result.errorBody())
         }
     }
 
