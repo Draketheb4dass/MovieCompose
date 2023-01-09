@@ -12,8 +12,8 @@ import androidx.navigation.compose.rememberNavController
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")
-    object Movie : Screen("movie/{movieId}") {
-        fun createRoute(movieId: String) = "movie/$movieId"
+    object TVShowDetail : Screen("detail") {
+        fun createRoute(tvShowId: String) = "$tvShowId"
     }
 }
 
@@ -30,11 +30,10 @@ class MovieComposeAppState(
     val navController: NavHostController,
     private val context: Context
 ) {
-    fun navigateToMovie(episodeUri: String, from: NavBackStackEntry) {
+    fun navigateToTVShow(episodeUri: String, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            val encodedUri = Uri.encode(episodeUri)
-            navController.navigate(Screen.Movie.createRoute(encodedUri))
+            navController.navigate(Screen.TVShowDetail.createRoute(episodeUri))
         }
     }
 

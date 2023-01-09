@@ -2,10 +2,12 @@ package com.jephtecolin.moviecompose
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.jephtecolin.moviecompose.ui.home.Home
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.jephtecolin.moviecompose.ui.tvdetail.TVShowDetail
 
 
 @Composable
@@ -19,20 +21,16 @@ fun MovieComposeApp(
         composable(Screen.Home.route) { backStackEntry ->
             Home(
                 viewModel = hiltViewModel(),
-                navigateToMovie = { movieId ->
-                    appState.navigateToMovie(movieId, backStackEntry)
+                navigateToMovie = { tvId ->
+                    appState.navigateToTVShow("${Screen.TVShowDetail.route}/${tvId}", backStackEntry)
                 }
             )
         }
-//        composable(Screen.Movie.route) { backStackEntry ->
-//            val playerViewModel: PlayerViewModel = viewModel(
-//                factory = PlayerViewModel.provideFactory(
-//                    owner = backStackEntry,
-//                    defaultArgs = backStackEntry.arguments
-//                )
-//            )
-//            PlayerScreen(playerViewModel, devicePosture, onBackPress = appState::navigateBack)
-//        }
+        composable("${Screen.TVShowDetail.route}/{tvId}" , arguments = listOf(navArgument("tvId"){
+            type = NavType.LongType
+        })) { backStackEntry ->
+            TVShowDetail(viewModel = hiltViewModel(), onBackPressed = { appState.navigateBack()})
+        }
 
     }
 }

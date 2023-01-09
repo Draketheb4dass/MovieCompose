@@ -48,7 +48,7 @@ fun Home(
                             viewModel.fetchNextMoviePage()
                         }
                     ) {
-                        TVShowCard(tvShow = it)
+                        TVShowCard(tvShow = it, Modifier, onClickCard = navigateToMovie)
                     }
                 }
         }

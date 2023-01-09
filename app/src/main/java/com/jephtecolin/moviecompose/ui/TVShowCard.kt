@@ -23,12 +23,14 @@ import com.jephtecolin.moviecompose.data.remote.Api
 import java.math.RoundingMode
 
 @Composable
-fun TVShowCard(tvShow: TVShow, modifier: Modifier = Modifier) {
+fun TVShowCard(tvShow: TVShow, modifier: Modifier = Modifier, onClickCard: (String) -> Unit) {
     Card(
         modifier = modifier
             .padding(4.dp)
             .clickable(
-                onClick = { }
+                onClick = {
+                    onClickCard(tvShow.id)
+                }
             ),
         elevation = CardDefaults.cardElevation(),
         shape = RoundedCornerShape(8.dp)
