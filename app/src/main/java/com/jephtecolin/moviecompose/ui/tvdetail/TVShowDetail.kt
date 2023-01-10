@@ -16,12 +16,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -63,18 +65,11 @@ private fun TVShowPoster(
     imageUrl: String,
     imageHeight: Dp,
     modifier: Modifier = Modifier,
-    placeholderColor: Color = MaterialTheme.colorScheme.onError,
     rating: Float,
     name: String,
     originalName: String,
     onBackPressed: () -> Unit
 ) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(data = imageUrl)
-            .crossfade(true)
-            .build()
-    )
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -84,13 +79,15 @@ private fun TVShowPoster(
         Box(modifier = Modifier
             .fillMaxWidth()
             .height(300.dp), contentAlignment = Alignment.BottomStart) {
-            Image(
-                painter = painter,
+            AsyncImage(
+                model = imageUrl,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(imageHeight)
+                    .height(imageHeight),
+                placeholder = ColorPainter(Color.Gray),
+                error = ColorPainter(Color.DarkGray)
             )
             Column(modifier = Modifier.padding(start = 24.dp)) {
                 Text(originalName, fontSize = 12.sp, color = Color.White)
@@ -106,17 +103,6 @@ private fun TVShowPoster(
         IconButton(onClick = { onBackPressed() }) {
             Image(painter = painterResource(id = R.drawable.ic_back), contentDescription = "star")
         }
-    }
-
-
-
-
-    if (painter.state is AsyncImagePainter.State.Loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(placeholderColor)
-        )
     }
 }
 

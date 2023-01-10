@@ -9,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -29,7 +31,10 @@ fun SeasonCard(season: Season, modifier: Modifier = Modifier) {
         Row(modifier = modifier) {
             AsyncImage(modifier = Modifier.weight(2F),
                 model = Api.getPosterPath(season.posterPath),
-                contentDescription = "")
+                contentDescription = "",
+                placeholder = ColorPainter(Color.Gray),
+                error = ColorPainter(Color.DarkGray)
+            )
             Column(modifier = Modifier.weight(5F).padding(10.dp)) {
                 Text(modifier = Modifier.padding(bottom = 5.dp), fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
