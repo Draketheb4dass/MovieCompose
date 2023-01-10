@@ -46,7 +46,7 @@ The following **bonus** features are implemented:
 * [ ] Add tablet support.
 * [ ] Use a Collapsing Toolbar animation on the details screen
 * [ ] Use of at least one animation
-* [ ] Manage light and Dark Theme
+* [x] Manage light and Dark Theme
 * [ ] Store Favorite TV Shows on the local database
 
 ## Video Walkthrough
